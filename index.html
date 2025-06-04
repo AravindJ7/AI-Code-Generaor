@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Python Code Assistant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-r from-purple-300 via-pink-200 to-yellow-100 min-h-screen p-6">
+    <div class="max-w-5xl mx-auto bg-white rounded-3xl p-10 shadow-xl">
+        <h1 class="text-3xl font-bold text-center mb-6 text-purple-700">🧠 Python Code Assistant</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <textarea name="user_input" rows="5" class="w-full p-4 border rounded-lg mb-4" placeholder="Describe a function or paste your code here..."></textarea>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+                <button name="action" value="generate" class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600">Generate</button>
+                <button name="action" value="execute" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Execute</button>
+                <button name="action" value="format" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Reload</button>
+                <button name="action" value="analyze" class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600">Analyze</button>
+                <button name="action" value="save" class="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700">Save</button>
+                <input type="hidden" name="prompt" value="{{ request.POST.user_input }}">
+                <input type="hidden" name="generated_code" value="{{ generated_code }}">
+            </div>
+        </form>
+
+        {% if generated_code %}
+        <div class="mb-6">
+            <h2 class="text-xl font-semibold text-purple-600">Generated Code:</h2>
+            <pre class="bg-purple-50 p-4 rounded-xl mt-2 overflow-auto">{{ generated_code }}</pre>
+        </div>
+        {% endif %}
+
+        {% if execution_output %}
+        <div class="mb-6">
+            <h2 class="text-xl font-semibold text-blue-600">Execution Output:</h2>
+            <pre class="bg-blue-50 p-4 rounded-xl mt-2 overflow-auto">{{ execution_output }}</pre>
+        </div>
+        {% endif %}
+
+        {% if formatted_code %}
+        <div class="mb-6">
+            <h2 class="text-xl font-semibold text-green-600">Formatted Code:</h2>
+            <pre class="bg-green-50 p-4 rounded-xl mt-2 overflow-auto">{{ formatted_code }}</pre>
+        </div>
+        {% endif %}
+
+        {% if analysis %}
+        <div class="mb-6">
+            <h2 class="text-xl font-semibold text-yellow-600">Code Analysis:</h2>
+            <pre class="bg-yellow-50 p-4 rounded-xl mt-2 overflow-auto">{{ analysis }}</pre>
+            <p class="text-yellow-700 font-bold">Rating: {{ rating }}/10</p>
+        </div>
+        {% endif %}
+
+        {% if save_status %}
+        <div class="mb-6">
+            <p class="text-green-700 font-bold">{{ save_status }}</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
